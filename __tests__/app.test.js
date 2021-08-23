@@ -28,27 +28,14 @@ describe('app routes', () => {
       return client.end(done);
     });
 
-    test('GET/ToDo returns list of ToDo', async() => {
-      const expectation = [
+    test('GET/ToDoList returns list of ToDo', async() => {
+      const expectation =
         {
           id: 1,
-          todo: 'walk the dog',
+          to_do: 'walk the dog',
           completed: false,
-          user_id: 2
-        },
-        {
-          id: 2,
-          todo: 'water the plants',
-          completed: false,
-          user_id: 2,
-        },
-        {
-          id: 3,
-          todo: 'wash the dishes',
-          completed: false,
-          user_id: 2
-        }
-      ];
+          user_id: 1
+        };
 
       const data = await fakeRequest(app)
         .get('/toDo')
