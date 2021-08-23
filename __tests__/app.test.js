@@ -44,5 +44,21 @@ describe('app routes', () => {
 
       expect(data.body[0]).toEqual(expectation);
     });
+    
+    test('POST /toDo creates a new toDo', async() => {
+      const newToDo = {
+        to_do: 'dust',
+        completed: false,
+        user_id: 1
+      };
+      const data = await fakeRequest(app)
+        .post('/toDo')
+        .send(newToDo)
+        .expect('Content-Type', /json/);
+
+      expect(data.body.to_do).toEqual(newToDo.to_do);
+      expect(data.body.id).toBeGreaterThan(0);
+    });
   });
 });
+
