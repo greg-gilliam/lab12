@@ -28,35 +28,55 @@ describe('app routes', () => {
       return client.end(done);
     });
 
-    test('returns animals', async() => {
-
-      const expectation = [
+    test('GET/ToDoList returns list of ToDo', async() => {
+      const expectation =
         {
-          'id': 1,
-          'name': 'bessie',
-          'cool_factor': 3,
-          'owner_id': 1
-        },
-        {
-          'id': 2,
-          'name': 'jumpy',
-          'cool_factor': 4,
-          'owner_id': 1
-        },
-        {
-          'id': 3,
-          'name': 'spot',
-          'cool_factor': 10,
-          'owner_id': 1
-        }
-      ];
+          id: 1,
+          to_do: 'walk the dog',
+          completed: false,
+          user_id: 1
+        };
 
       const data = await fakeRequest(app)
-        .get('/animals')
+        .get('/toDo')
         .expect('Content-Type', /json/)
         .expect(200);
 
-      expect(data.body).toEqual(expectation);
+      expect(data.body[0]).toEqual(expectation);
+    });
+
+    test('POST /toDo creates a new toDo', async() => {
+      const newToDo = {
+        to_do: 'dust',
+        completed: false,
+        user_id: 1
+      };
+      const data = await fakeRequest(app)
+        .post('/toDo')
+        .send(newToDo)
+        .expect('Content-Type', /json/);
+
+      expect(data.body.to_do).toEqual(newToDo.to_do);
+      expect(data.body.id).toBeGreaterThan(0);
+    });
+
+    test('PUT /toDo creates an updated toDo', async () => {
+      const updatedToDo = {
+        id: 4,
+        to_do: 'dust',
+        completed: false,
+        user_id: 1
+      };
+
+      const data = await fakeRequest(app)
+        .put('/toDo/4')
+        .send(updatedToDo)
+        .expect(200)
+        .expect('Content-Type', /json/);
+
+      expect(data.body.to_do).toEqual(updatedToDo.to_do);
+      expect(data.body.id).toEqual(updatedToDo.id);
     });
   });
 });
+
