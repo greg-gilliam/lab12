@@ -27,25 +27,6 @@ describe('app routes', () => {
     afterAll(done => {
       return client.end(done);
     });
-
-    test('GET/api/ToDoList returns list of ToDo', async() => {
-      const expectation =
-        {
-          id: 1,
-          to_do: 'walk the dog',
-          completed: false,
-          user_id: 2
-        };
-
-      const data = await fakeRequest(app)
-        .get('/api/toDo')
-        .set('Authorization', token)
-        .expect('Content-Type', /json/)
-        .expect(200);
-
-      expect(data.body[0]).toEqual(expectation);
-    });
-
     test('POST /api/toDo creates a new toDo', async() => {
       const newToDo = {
         to_do: 'dust',
@@ -61,6 +42,25 @@ describe('app routes', () => {
       expect(data.body.to_do).toEqual(newToDo.to_do);
       expect(data.body.id).toBeGreaterThan(0);
     });
+
+    test('GET /api/toDo returns list of ToDos', async() => {
+      const expectation = 
+        {
+          id: 4,
+          to_do: 'dust',
+          completed: false,
+          user_id: 2
+        };
+
+      const data = await fakeRequest(app)
+        .get('/api/toDo')
+        .set('Authorization', token)
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      expect(data.body[0]).toEqual(expectation);
+    });
+
 
     test('PUT /api/toDo creates an updated toDo', async () => {
       const updatedToDo = {
