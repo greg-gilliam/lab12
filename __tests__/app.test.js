@@ -34,7 +34,7 @@ describe('app routes', () => {
           id: 1,
           to_do: 'walk the dog',
           completed: false,
-          user_id: 1
+          user_id: 2
         };
 
       const data = await fakeRequest(app)
